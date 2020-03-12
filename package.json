@@ -1,0 +1,33 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "Node.js backend for todo app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkinkela1/todo-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "mongodb",
+    "todo",
+    "api"
+  ],
+  "author": "Matteo Kinkela",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkinkela1/todo-api/issues"
+  },
+  "homepage": "https://github.com/mkinkela1/todo-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.4",
+    "nodejs": "0.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
