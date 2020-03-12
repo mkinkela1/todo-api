@@ -3,6 +3,7 @@ const app = express();
 import morgan from 'morgan';
 import { urlencoded, json } from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ mongoose.connect(
   }
 );
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(urlencoded({extended: false}));
 app.use(json());
@@ -28,6 +30,10 @@ app.use((req, res, next) => {
 
   next();
 });
+
+const TaskRoutes = require('./routes/tasks');
+
+app.use('/api/tasks', TaskRoutes);
 
 app.use((req,res,next) => {
   const error = new Error('Not found');
