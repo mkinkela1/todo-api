@@ -1,11 +1,12 @@
 import { check } from 'express-validator';
 
-export function validateCreateTask() {
+exports.validateCreateTask = () => {
   return [
     check('name').exists().isString(),
     check('description').exists().isString()
   ];
 };
+
 
 export function validateGetTasks() {
   return [];

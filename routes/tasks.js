@@ -1,12 +1,12 @@
 import { Router } from 'express';
 const router = Router();
 
-import { createTask, getTasks, updateTask, deleteTask } from './../controllers/TaskController';
-import { validateCreateTask, validateGetTasks, validateUpdateTask, validateDeleteTask } from '../validators/TaskValidator';
+const TaskController = require('./../controllers/TaskController');
+const Validator = require('./../validators/TaskValidator');
 
-router.post('/', validateCreateTask, createTask);
-router.get('/', validateGetTasks, getTasks);
-router.put('/:taskId', validateUpdateTask, updateTask);
-router.delete('/:taskId', validateDeleteTask, deleteTask);
+router.post('/', Validator.validateCreateTask(), TaskController.createTask);
+router.get('/', Validator.validateGetTasks(), TaskController.getTasks);
+router.put('/:taskId', Validator.validateUpdateTask(), TaskController.updateTask);
+router.delete('/:taskId', Validator.validateDeleteTask(), TaskController.deleteTask);
 
 module.exports = router;

@@ -1,99 +1,174 @@
-import { Types } from 'mongoose';
+import mongoose from 'mongoose';
+import { validationResult } from 'express-validator';
+
 import Task from '../models/task';
 
-export function createTask(req, res, next) {
+/**
+ * @param  {} req
+ * @param  {} res
+ * @param  {} next
+ */
+exports.createTask = (req, res, next) => {
 
-  const date = new Date();
-  const time = date.getTime();
+  try {
 
-  const task = new Task({
-    _id: new Types.ObjectId(),
-    name: req.body.name,
-    description: req.body.description,
-    createdAt: time
-  });
+    validationResult(req).throw();
 
-  task.save()
-    .then(result => {
-      res.status(201).json({
-        message: 'Zadatak je stvoren'
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
+    const { name, description } = req.body;
+
+    const task = new Task({
+      _id: new mongoose.Types.ObjectId(),
+      name: name,
+      description: description
     });
-}
-export function getTasks(req, res, next) {
 
-  Task
-    .find()
-    .exec()
-    .then(docs => {
-      if(docs.length > 0)
-        res.status(200).json({
-          docs: docs
-        });
-      else 
-        res.status(404).json({
-          message: 'Zadaci ne postoje'
-        });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+    task
+      .save()
+      .then(result => {
+        res
+          .status(201)
+          .json(result);
+      })
+      .catch(error => {       
+        res
+          .status(500)
+          .json(error);
       });
-    });
-}
-
-export function updateTask(req, res, next) {
   
-  const id = req.params.taskId;
+  } catch(error) {
+    res
+      .status(422)
+      .json(error);
+  }
+};
 
-  const name = req.body.name;
-  const description = req.body.description;
+/**
+ * @param  {} req
+ * @param  {} res
+ * @param  {} next
+ */
+exports.getTasks =(req, res, next) => {
 
-  const updateOps = {}
+  try {
 
-  if(name)
-    updateOps['name'] = name;
-  if(description)
-    updateOps['description'] = description;
+    validationResult(req).throw();
 
-  Task
-    .update(
-      { _id: id },
-      { $set: updateOps })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        result: result
+    Task
+      .find()
+      .exec()
+      .then(docs => {
+        if(docs.length > 0)
+          res
+            .status(200)
+            .json(docs);
+        else 
+          res
+            .status(404)
+            .json();
+      })
+      .catch(error => {
+        res
+          .status(500)
+          .json(error);
       });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+
+  } catch(error) {
+    res
+      .status(422)
+      .json(error);
+  }
+};
+
+/**
+ * @param  {} req
+ * @param  {} res
+ * @param  {} next
+ */
+exports.getTaskById = (req, res, next) => {
+
+  try {
+
+    validationResult(req).throw();
+
+  } catch(error) {
+    res
+      .status(422)
+      .json(error);
+  }
+} 
+
+/**
+ * @param  {} req
+ * @param  {} res
+ * @param  {} next
+ */
+exports.updateTask = (req, res, next) => {
+  
+  try {
+
+    validationResult(req).throw();
+
+    const { id } = req.params;
+    const { name, description } = req.body;
+    let updateOps = {}
+
+    if(name)
+      updateOps['name'] = name;
+    if(description)
+      updateOps['description'] = description;
+
+    Task
+      .update(
+        { _id: id },
+        { $set: updateOps })
+      .exec()
+      .then(result => {
+        res
+          .status(200)
+          .json(result);
+      })
+      .catch(error => {
+        res
+          .status(500)
+          .json(error);
       });
-    });
 
-}
+  } catch(error) {
+    res
+      .status(422)
+      .json(error);
+  }
 
-export function deleteTask(req,res, next) {
+};
+/**
+ * @param  {} req
+ * @param  {} res
+ * @param  {} next
+ */
+exports.deleteTask = (req,res, next) => {
 
-  const id = req.params.taskId;
+  try {
+      
+    validationResult(req).throw();
 
-  Task
-    .remove({ _id: id })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: 'Zadatak je izbrisan'
+    const { id } = req.params;
+
+    Task
+      .remove({ _id: id })
+      .exec()
+      .then(result => {
+        res
+          .status(204);
+      })
+      .catch(error => {
+        res
+          .status(500)
+          .json(error);
       });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    });
+
+  } catch(error) {
+    res
+      .status(422)
+      .json(error);
+  }
 }
