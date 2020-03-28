@@ -153,8 +153,11 @@ exports.deleteTask = (req,res, next) => {
 
     const { id } = req.params;
 
+    console.log(id);
+    
+
     Task
-      .remove({ _id: id })
+      .deleteOne({ _id: id })
       .exec()
       .then(result => {
         res

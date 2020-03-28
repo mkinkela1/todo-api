@@ -20,6 +20,6 @@ export function validateUpdateTask() {
 
 export function validateDeleteTask() {
   return [
-    check('taskId').exists().isMongoId()
+    check('id').exists().isMongoId()
   ];
 } 
